@@ -7,3 +7,6 @@ Win32/
 
 # User-specific files
 *.user
+
+# resource intermediate files
+*.aps
