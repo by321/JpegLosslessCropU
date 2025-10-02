@@ -141,7 +141,7 @@ BOOL CDibLookApp::InitInstance()
 	LoadStdProfileSettings(9);  // Load standard INI file options (including MRU)
 
 	// MultiExt: Create new doc manager, to deal with multiple extension
-	m_pDocManager = new CDocManagerEx;
+	//m_pDocManager = new CDocManagerEx;
 
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views.
