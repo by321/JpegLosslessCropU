@@ -32,7 +32,60 @@ public:
 	int m_top_zoomed;
 	int m_right_zoomed;
 	int m_bottom_zoomed;
+
+/* Summary from Copilot:
+
+m_flag is an internal state variable used to track the current mouse interaction mode in the view,
+especially for cropping, resizing, and moving operations.
+
+Values and Their Meanings
+| Value   | Meaning / Mode                                                                        | Where Set / Used                |
+|---------|---------------------------------------------------------------------------------------|---------------------------------|
+| 0       | Idle/None – No special mouse operation is active.                                     | On construction, after mouse
+																									up,	or when resetting state.  |
+| 1       | Crop/Selection Start – User has pressed the mouse button to start a crop/selection.   | OnLButtonDown, OnMouseMove    |
+| 2       | Crop/Selection Drag – User is dragging to define the crop/selection rectangle.        | OnMouseMove                   |
+| 4       | Left Edge Resize – User is resizing the left edge of the crop rectangle.              | OnMouseMove (edge detection)  |
+| 5       | Top Edge Resize – User is resizing the top edge.                                      | OnMouseMove                   |
+| 6       | Right Edge Resize – User is resizing the right edge.                                  | OnMouseMove                   |
+| 7       | Bottom Edge Resize – User is resizing the bottom edge.                                | OnMouseMove                   |
+| 8       | Top-Left Corner Resize – User is resizing the top-left corner (NWSE cursor).          | OnMouseMove                   |
+| 9       | Top-Right Corner Resize – User is resizing the top-right corner (NESW cursor).        | OnMouseMove                   |
+| 10      | Bottom-Right Corner Resize – User is resizing the bottom-right corner (NWSE cursor).  | OnMouseMove                   |
+| 11      | Bottom-Left Corner Resize – User is resizing the bottom-left corner (NESW cursor).    | OnMouseMove                   |
+| 100     | Move Crop/Frame Start – User has started moving the crop/frame (move cursor).         | OnPopup1MoveFrame, OnMouseMove|
+| 101     | Move Crop/Frame Drag – User is dragging the crop/frame.                               | OnMouseMove                   |
+---
+How It Works in Practice
+•	Mouse Down (OnLButtonDown):
+•	If m_flag == 0, set to 1 (start crop/selection).
+•	Mouse Move (OnMouseMove):
+•	If m_flag == 1 and mouse moves, transition to 2 (dragging selection).
+•	If m_flag == 2, update the selection rectangle as the mouse moves.
+•	If m_flag == 100, start moving the crop/frame; transition to 101 as the mouse moves.
+•	If m_flag == 101, update the crop/frame position as the mouse moves.
+•	If not dragging, checks mouse position relative to crop rectangle edges/corners and sets m_flag to 4–11 for resizing,
+	or 8–11 for corner resizing, updating the cursor accordingly.
+•	Mouse Up (OnLButtonUp):
+•	Resets m_flag to 0 (idle) and restores the cursor.
+•	Move Frame Command (OnPopup1MoveFrame):
+•	Sets m_flag to 100 to initiate move mode.
+
+
+| m_flag Value | User Action / State                | Cursor
+|--------------|------------------------------------|---------------
+| 0            | Idle                               | Arrow
+| 1            | Crop/selection started             | Arrow
+| 2            | Crop/selection dragging            | Arrow
+| 4, 6         | Left/Right edge resize             | Size WE
+| 5, 7         | Top/Bottom edge resize             | Size NS
+| 8, 10        | Top-left/Bottom-right corner resize| Size NWSE
+| 9, 11        | Top-right/Bottom-left corner resize| Size NESW
+| 100          | Move crop/frame started            | Size All
+| 101          | Move crop/frame dragging           | Size All      |
+*/
 	int m_flag;
+
 	int m_x;
 	int m_y;
 	int m_zoomval;
