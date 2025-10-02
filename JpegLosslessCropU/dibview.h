@@ -58,7 +58,7 @@ public:
 	// Printing support
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-
+	void UpdateViewZoom_helper(CCmdUI* pCmdUI, int selectedLevel);
 // Generated message map functions
 // protected:
 public:

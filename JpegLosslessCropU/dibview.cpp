@@ -270,6 +270,22 @@ int fs2_dither(FSBUF *fs, unsigned char *ptr, int nc, int num_rows, int num_cols
   return nc;
 }
 
+
+void CDibView::UpdateViewZoom_helper(CCmdUI* pCmdUI, int selectedLevel)
+{
+	CDibDoc* pDoc = GetDocument();
+	TCHAR buf[64];
+
+	int scale = pDoc->m_scale;
+	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
+
+	pCmdUI->SetCheck(scale == selectedLevel);
+
+	_stprintf(buf, _T("%2d/%d    |    %.4g %%"), selectedLevel, pDoc->m_scale_denom,
+		(double)selectedLevel * 100.0 / (double)pDoc->m_scale_denom);
+	pCmdUI->SetText(buf);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CDibView drawing
 
@@ -3540,245 +3556,22 @@ void CDibView::OnViewZoom16()
 	}
 }
 
-void CDibView::OnUpdateViewZoom1(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 1);
-
-	_stprintf(buf, _T("  1/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 100 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom2(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 2);
-
-	_stprintf(buf, _T("  2/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 200 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom3(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 3);
-
-	_stprintf(buf, _T("  3/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 300 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom4(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 4);
-
-	_stprintf(buf, _T("  4/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 400 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom5(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 5);
-
-	_stprintf(buf, _T("  5/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 500 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom6(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 6);
-
-	_stprintf(buf, _T("  6/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 600 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom7(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 7);
-
-	_stprintf(buf, _T("  7/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 700 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom8(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 8);
-
-	_stprintf(buf, _T("  8/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 800 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom9(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 9);
-
-	_stprintf(buf, _T("  9/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 900 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom10(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 10);
-
-	_stprintf(buf, _T("10/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 1000 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom11(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 11);
-
-	_stprintf(buf, _T("11/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 1100 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom12(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 12);
-
-	_stprintf(buf, _T("12/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 1200 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom13(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 13);
-
-	_stprintf(buf, _T("13/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 1300 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom14(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 14);
-
-	_stprintf(buf, _T("14/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 1400 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom15(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 15);
-
-	_stprintf(buf, _T("15/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 1500 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
-
-void CDibView::OnUpdateViewZoom16(CCmdUI *pCmdUI)
-{
-	CDibDoc *pDoc = GetDocument();
-	TCHAR buf[64];
-
-	int scale = pDoc->m_scale;
-	if (scale == pDoc->m_scale_denom) scale = m_zoomval;
-
-	pCmdUI->SetCheck(scale == 16);
-
-	_stprintf(buf, _T("16/%d    |    %.4g %%"), pDoc->m_scale_denom,
-		(double) 1600 / (double) pDoc->m_scale_denom);
-	pCmdUI->SetText(buf);
-}
+void CDibView::OnUpdateViewZoom1(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 1); }
+void CDibView::OnUpdateViewZoom2(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 2); }
+void CDibView::OnUpdateViewZoom3(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 3); }
+void CDibView::OnUpdateViewZoom4(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 4); }
+void CDibView::OnUpdateViewZoom5(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 5); }
+void CDibView::OnUpdateViewZoom6(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 6); }
+void CDibView::OnUpdateViewZoom7(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 7); }
+void CDibView::OnUpdateViewZoom8(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 8); }
+void CDibView::OnUpdateViewZoom9(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 9); }
+void CDibView::OnUpdateViewZoom10(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 10); }
+void CDibView::OnUpdateViewZoom11(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 11); }
+void CDibView::OnUpdateViewZoom12(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 12); }
+void CDibView::OnUpdateViewZoom13(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 13); }
+void CDibView::OnUpdateViewZoom14(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 14); }
+void CDibView::OnUpdateViewZoom15(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 15); }
+void CDibView::OnUpdateViewZoom16(CCmdUI* pCmdUI) { UpdateViewZoom_helper(pCmdUI, 16); }
 
 void CDibView::OnUpdateToolbarScale(CCmdUI *pCmdUI)
 {
