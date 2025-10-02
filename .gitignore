@@ -1,0 +1,9 @@
+# Visual Studio cache data
+.vs/
+
+# VC++ build output directories, set in the project properties
+x64/
+Win32/
+
+# User-specific files
+*.user
