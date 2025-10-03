@@ -33,6 +33,8 @@ public:
 	int m_trim;
 	int m_optimize_coding;
 	int m_copyoption;
+	//Copilot: Controls whether dithering should be applied when displaying images(typically for 16 - bit displays).
+	// 0 : Dithering is disabled, Non - zero : Dithering is enabled.
 	int m_dither;
 	int m_processing_mode;
 	int m_copyfiletime;

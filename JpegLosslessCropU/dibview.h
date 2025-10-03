@@ -24,14 +24,11 @@ public:
 			return (CDibDoc*) m_pDocument;
 		}
 	CSize m_zoomedsize;
-	int m_left;
-	int m_top;
-	int m_right;
-	int m_bottom;
-	int m_left_zoomed;
-	int m_top_zoomed;
-	int m_right_zoomed;
-	int m_bottom_zoomed;
+	
+	//number of pixels to crop from each side, not positions of edges
+	int m_left,m_top,m_right,m_bottom;
+	// corresponding crop values in the view space, adjusted for the current zoom level.
+	int m_left_zoomed,m_top_zoomed,m_right_zoomed,m_bottom_zoomed;
 
 /* Summary from Copilot:
 
@@ -88,7 +85,7 @@ How It Works in Practice
 
 	int m_x;
 	int m_y;
-	int m_zoomval;
+	int m_zoomval; // current zoom level, [1,16], 1=12.5%, 2=25%, and so on
 	int m_setcursor;
 	int m_save_zoom;
 	const TCHAR *m_format;
