@@ -786,9 +786,47 @@ void CDibView::OnInitialUpdate()
 	SetClassLong(m_hWnd, GCLP_HBRBACKGROUND, NULL);
 }
 
-void CDibView::OnUpdate(CView* pSender,
-						LPARAM lHint,
-						CObject* pHint)
+/* Copilot: Update() is called:
+1.	By the MFC framework:
+•	When the document changes and calls UpdateAllViews(), MFC will call OnUpdate() for each view.
+•	Example: After loading a new image, pasting, or other document modifications.
+2.	Directly in your code:
+•	Called from within CDibView methods to refresh the view after user actions (e.g., mouse events, selection changes).
+•	Example:
+•	OnEditSelectAll() calls OnUpdate(NULL, 1);
+•	Mouse event handlers (like OnLButtonUp, OnMouseMove) call OnUpdate(NULL);
+•	Zoom handlers may call OnUpdate(NULL, selectedLevel + 3);
+
+What do the parameters mean?
+  CView* pSender:
+	The view that initiated the update.
+	Usually NULL when called directly.
+  LPARAM lHint:
+	A hint value to indicate the type of update or context.
+    Common values in this code:
+		0: General update (default, or when called with no specific hint).
+		1: Used for "Select All" (see OnEditSelectAll()).
+		2: Used for certain zoom/size updates.
+		3: Used as a special case to return early in the function.
+		4 to 19: Used for zoom level changes. The zoom value is lHint - 3.
+CObject* pHint:
+  Additional context object (rarely used in this code, usually NULL).
+---
+Summary Table
+| lHint Value | Meaning/Usage                                 | 
+|-------------|-----------------------------------------------| 
+| 0           | General update (default)                      | 
+| 1           | "Select All" operation                        | 
+| 2           | Zoom/size update                              | 
+| 3           | Special case, causes early return             | 
+| 4-19        | Zoom level change (zoomval = lHint - 3)       |
+---
+In short:
+OnUpdate() is called whenever the view needs to refresh, either by MFC or your own code.
+The lHint parameter is used to indicate the reason for the update, with specific values
+(especially 4-19) used to signal zoom level changes. This allows the function to
+optimize what needs to be recalculated or redrawn. */
+void CDibView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 {
 	if ((int)lHint >= 4 && (int)lHint <= 19)
 	{
@@ -1089,7 +1127,56 @@ BOOL CDibView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CScrollView::OnSetCursor(pWnd, nHitTest, message);
 }
 
+/*Copilot: OnMouseMove handles mouse movement over the image view, supporting interactive selection,
+cropping, and resizing of regions. It updates selection rectangles, handles drag operations,
+and provides visual feedback (like changing the cursor).
 
+High-Level Flow
+1.	Call Base Handler:
+	Calls CScrollView::OnMouseMove to ensure default processing.
+2.	Get Context:
+	•	Gets pointers to the application (CDibLookApp) and document (CDibDoc).
+	•	Calculates the mouse position in both zoomed and unzoomed coordinates.
+3.	Set Cursor Override:
+	Sets a flag so the view can set its own cursor shape.
+4.	Handle Drag/Move Modes (m_flag):
+	The behavior depends on the value of m_flag, which tracks the current interaction mode:
+	•	100/101: Moving the entire selection frame (dragging the crop rectangle).
+	•	1/2: Drawing or resizing a selection rectangle.
+	•	4-11: Resizing edges or corners of the selection.
+	•	0: Not dragging; just hovering.
+5.	Update Selection/Crop Rectangle:
+	•	Adjusts m_left, m_top, m_right, m_bottom and their zoomed equivalents based on mouse position and mode.
+	•	If cropping must be MCU-aligned (for lossless JPEG), it snaps coordinates to MCU boundaries.
+	•	If endpoint snapping is enabled, it further snaps to MCU edges.
+6.	Visual Feedback:
+	•	Draws drag rectangles for selection.
+	•	Updates the status bar with the current selection/crop size and position.
+	•	Changes the mouse cursor to indicate possible actions (move, resize, etc.).
+7.	Trigger View Update:
+	•	Calls OnUpdate(NULL) to refresh the view if the selection/crop area changes.
+
+Key Variables
+•	m_flag: Current interaction mode (0 = idle, 1 = drawing, 2 = resizing, 100/101 = moving, 4-11 = edge/corner resizing).
+•	m_left, m_top, m_right, m_bottom: Selection/crop rectangle in image coordinates.
+•	m_left_zoomed, etc.: Same, but in zoomed (screen) coordinates.
+•	myapp->m_trim: If true, restricts selection to MCU boundaries.
+•	myapp->m_endpoint_snap: If true, snaps selection endpoints to MCU edges.
+
+Example Scenarios
+•	Dragging a selection: As you drag, the rectangle updates, snapping to MCU boundaries if required.
+•	Hovering near an edge/corner: The cursor changes to indicate you can resize that edge/corner.
+•	Moving the selection: The entire crop rectangle moves with the mouse.
+
+Gotchas
+•	The function is long and handles many cases; most logic is inside the switch (m_flag) block.
+•	MCU alignment is critical for lossless JPEG cropping—handled by snapping logic.
+•	The function updates both logical (image) and visual (zoomed) coordinates.
+
+Summary:
+OnMouseMove is the core of interactive cropping and selection in the view. It tracks the mouse,
+updates the selection rectangle, snaps to JPEG MCU boundaries if needed, provides visual feedback,
+and triggers redraws as the user interacts with the image. */
 void CDibView::OnMouseMove(UINT nFlags, CPoint point)
 {
   CScrollView::OnMouseMove(nFlags, point);

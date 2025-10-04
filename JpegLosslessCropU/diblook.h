@@ -30,6 +30,17 @@ public:
 	int m_show_blockgrid;
 	int m_show_cropmask;
 	int m_endpoint_snap;
+
+/*Copilot: m_trim is used to control whether image cropping and selection operations should be "trimmed" to
+align with JPEG MCU (Minimum Coded Unit) boundaries. This is important for lossless JPEG operations,
+as partial MCUs cannot be losslessly cropped.
+
+When m_trim is non-zero, the code enforces that cropping/selection edges are MCU-aligned, 
+and may adjust the crop rectangle to avoid partial MCUs.
+
+	0: Trimming is disabled. Cropping/selection can be at any pixel boundary.
+	1: Trimming is enabled. Cropping/selection is forced to MCU boundaries (lossless).
+*/
 	int m_trim;
 	int m_optimize_coding;
 	int m_copyoption;

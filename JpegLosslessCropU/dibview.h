@@ -87,6 +87,35 @@ How It Works in Practice
 	int m_y;
 	int m_zoomval; // current zoom level, [1,16], 1=12.5%, 2=25%, and so on
 	int m_setcursor;
+/*Copilot: The "Save with Zoom" option (controlled by m_save_zoom in CDibView) determines whether cropping
+and saving operations use the current zoomed (displayed) region or the original image coordinates.
+
+How it works:
+•	When "Save with Zoom" is ON (m_save_zoom != 0):
+•	The crop rectangle and offsets are taken from the zoomed (screen) coordinates (m_left_zoomed, m_top_zoomed, etc.).
+•	The document's crop parameters (m_crop_xoffset, m_crop_yoffset, m_crop_width, m_crop_height, m_save_scale) are 
+    set to match the currently visible/selected area at the current zoom level.
+•	When you save or export, only the visible (zoomed/cropped) region is saved.
+•	When "Save with Zoom" is OFF:
+•	The crop rectangle and offsets are taken from the original image coordinates (m_left, m_top, etc.).
+•	The document's crop parameters are set to match the full image or the selected region in original image space.
+•	Saving will use the full image or the selection, regardless of the current zoom.
+
+Where is this set?
+•	Toggled by the menu/command handler: OnOptionsSaveZoom().
+•	The state is used in drawing, cropping, and saving logic (see OnDraw, OnUpdate, and OnPopup1DefineFrame).
+
+Why use it?
+•	ON: Lets you save exactly what you see on screen (including zoom/crop).
+•	OFF: Lets you save the original image or a selection, independent of zoom.
+
+Example:
+•	If you zoom in and select a region, turning "Save with Zoom" ON will save just that zoomed region.
+•	If OFF, saving will use the original image's coordinates, not the zoomed view.
+
+Summary:
+"Save with Zoom" makes saving/exporting use the currently zoomed/cropped area, so you can easily save just what you see, not the whole image.
+*/
 	int m_save_zoom;
 	const TCHAR *m_format;
 
