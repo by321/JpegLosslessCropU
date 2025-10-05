@@ -18,4 +18,5 @@ Adding Unicode support wasn't difficult, it was mostly converting many, many ANS
 do it manually. If you are really good with regular expression, you can probably write a RE to do that,
 but I just aked AI to do it and it worked.
 
-There are many places in the code that's just crying out for refactoring/improvement, for starters, it looks like that ugly MFC CDocManagerEx class it not really needed.
+Removed using CDocManagerEx class, which seems unneeded. But the source code files are left in the repo just in case.
+
