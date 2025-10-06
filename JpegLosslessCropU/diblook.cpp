@@ -18,7 +18,7 @@
 #include "dibview.h"
 
 // MultiExt
-#include "DocManagerEx.h"
+//#include "DocManagerEx.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
